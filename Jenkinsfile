@@ -1,22 +1,20 @@
 pipeline {
     agent any
+    parameters {
+        string(name: 'DEPLOY_ENV', defaultValue: 'dev', description: 'Environment to deploy')
+    }
     stages {
-        stage('Git Checkout') {
-            steps {
-                git branch: 'main', url: 'https://github.com/andrewkhmaladze/AndrewDevopsBootCamp.git'
-            }
-        }
         stage('Build') {
             steps {
-                echo 'Compiling source code...'
-                sh 'sleep 2'
+                echo 'Building...'
             }
         }
-        stage('Test') {
+        stage('Deploy') {
+            when {
+                expression { params.DEPLOY_ENV == 'dev' }
+            }
             steps {
-                echo 'Running unit tests...'
-                sh 'sleep 1'
-                echo 'All tests passed!'
+                echo "Deploying to ${params.DEPLOY_ENV} environment"
             }
         }
     }
