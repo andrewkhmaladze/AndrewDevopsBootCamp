@@ -1,0 +1,15 @@
+pipeline {
+    agent none   // define agents per stage
+    stages {
+        stage('Build') {
+            agent { label 'mylabel' }
+            steps {
+                echo 'Building on mylabel'
+            }
+        }
+        stage('Test') {
+            agent { label 'slave' }
+            steps {
+                echo 'Testing on slave'
+            }
+        }
