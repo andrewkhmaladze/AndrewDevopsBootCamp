@@ -1,21 +1,43 @@
 pipeline {
     agent any
-    parameters {
-        string(name: 'DEPLOY_ENV', defaultValue: 'dev', description: 'Environment to deploy')
+    tools {
+        maven 'MAVEN_HOME'
     }
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                echo 'Building...'
+                git 'https://github.com/andrewkhmaladze/AndrewDevopsBootCamp.git'
             }
         }
-        stage('Deploy') {
-            when {
-                expression { params.DEPLOY_ENV == 'dev' }
-            }
+        stage('Build') {
             steps {
-                echo "Deploying to ${params.DEPLOY_ENV} environment"
+                sh 'echo "Compiling app..."'
+                sh 'sleep 2'
             }
+        }
+        stage('Test') {
+            steps {
+                sh 'echo "Running tests..."'
+                sh 'sleep 2'
+                sh 'echo "Tests passed successfully!"'
+            }
+        }
+        stage('Package') {
+            steps {
+                sh 'tar -czf build-artifact.tar.gz *'
+                archiveArtifacts artifacts: 'build-artifact.tar.gz', fingerprint: true
+            }
+        }
+        stage('Deploy (Simulated)') {
+            steps {
+                sh 'echo "Deploying to staging..."'
+                sh 'sleep 2'
+            }
+        }
+    }
+    post {
+        always {
+            echo 'Pipeline completed!'
         }
     }
 }
