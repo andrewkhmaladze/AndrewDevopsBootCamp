@@ -1,12 +1,12 @@
 pipeline {
     agent any
     tools {
-        maven 'MAVEN_HOME'
+        maven 'MAVEN_HOME'  // only if you installed it under Manage Jenkins > Global Tool Configuration
     }
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/andrewkhmaladze/AndrewDevopsBootCamp.git'
+                git branch: 'main', url: 'https://github.com/andrewkhmaladze/AndrewDevopsBootCamp.git'
             }
         }
         stage('Build') {
@@ -40,4 +40,4 @@ pipeline {
             echo 'Pipeline completed!'
         }
     }
-}       #coment to test, more from me  
+}
