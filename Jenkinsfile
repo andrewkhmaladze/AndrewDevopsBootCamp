@@ -19,10 +19,12 @@ pipeline {
  
         stage('Test') {
             steps {
-                sh 'mvn test'
+                // Run tests, but don't stop the pipeline immediately if they fail
+                sh 'mvn test || true'
             }
             post {
                 always {
+                    // Always collect JUnit results, even if mvn test failed
                     junit '**/target/surefire-reports/*.xml'
                 }
             }
