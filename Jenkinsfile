@@ -3,33 +3,34 @@ pipeline {
     tools {
         maven 'MAVEN_HOME'      // Configure this name in Manage Jenkins → Tools
     }
- 
+
     stages {
         stage('Checkout') {
             steps {
                 git branch: 'compresingExcerciseBranch', url: 'https://github.com/andrewkhmaladze/AndrewDevopsBootCamp.git'
             }
         }
- 
+
         stage('Build') {
             steps {
                 sh 'mvn clean compile'
             }
         }
- 
-        stage('Test') {
+
+        stage('Run Tests') {
             steps {
-                // Run tests, but don't stop the pipeline immediately if they fail
-                sh 'mvn test || true'
-            }
-            post {
-                always {
-                    // Always collect JUnit results, even if mvn test failed
-                    junit '**/target/surefire-reports/*.xml'
+                catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                    sh 'mvn test'
                 }
             }
         }
- 
+
+        stage('Publish Results') {
+            steps {
+                junit '**/target/surefire-reports/*.xml'
+            }
+        }
+
         stage('Package') {
             steps {
                 sh 'mvn package -DskipTests'
@@ -37,7 +38,7 @@ pipeline {
             }
         }
     }
- 
+
     post {
         success {
             echo '✅ Build, test, and packaging completed successfully!'
