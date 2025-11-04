@@ -10,4 +10,4 @@ public class AppTest {
         String result = App.getGreeting();
         assertEquals("Wrong Message!", result);  // <-- intentionally wrong
     }
-i}
+}
