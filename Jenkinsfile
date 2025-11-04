@@ -34,7 +34,13 @@ pipeline {
                 }
             }
         }
- 
+	
+	stage('Auto Format (Optional)') {
+    steps {
+        sh 'mvn spotless:apply'
+        echo '🧹 Code formatting automatically fixed by Jenkins.'
+    }
+} 
         stage('Formatter Check (Spotless)') {
             steps {
                 // Verify formatting consistency (does NOT change code)
