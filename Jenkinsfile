@@ -1,8 +1,7 @@
 pipeline {
     agent any
- 
     tools {
-        maven 'MAVEN_HOME' // same name as configured in Jenkins tools
+        maven 'MAVEN_HOME'
     }
  
     stages {
@@ -18,31 +17,28 @@ pipeline {
             }
         }
  
-        stage('Test') {
+        stage('Linter Check (Checkstyle)') {
             steps {
-                sh 'mvn test || true'  // <-- continue even if tests fail (for demo)
+                // Run the Checkstyle plugin
+                sh 'mvn checkstyle:checkstyle'
             }
             post {
                 always {
-                    junit '**/target/surefire-reports/*.xml'
+                    recordIssues tools: [checkStyle(pattern: '**/target/checkstyle-result.xml')]
+                }
+                unstable {
+                    echo '⚠️ Linter found warnings.'
+                }
+                failure {
+                    echo '❌ Build failed due to style violations.'
                 }
             }
         }
  
-        stage('Checkstyle') {
+        stage('Formatter Check (Spotless)') {
             steps {
-                script {
-                    // Run Checkstyle and avoid breaking the build if it fails
-                    sh 'mvn checkstyle:checkstyle || true'
- 
-                    // Check if the file exists before recording
-                    if (fileExists('target/checkstyle-result.xml')) {
-                        recordIssues tools: [checkStyle(pattern: '**/target/checkstyle-result.xml')]
-                        echo '✅ Checkstyle report generated and recorded.'
-                    } else {
-                        echo '⚠️ No Checkstyle report found. Skipping recordIssues.'
-                    }
-                }
+                // Verify formatting consistency (does NOT change code)
+                sh 'mvn spotless:check'
             }
         }
  
@@ -56,13 +52,10 @@ pipeline {
  
     post {
         success {
-            echo '✅ Pipeline finished successfully.'
+            echo '✅ Build, lint, and format checks passed!'
         }
         failure {
-            echo '❌ Pipeline failed. Check logs and reports.'
-        }
-        always {
-            echo 'Pipeline completed (success or failure).'
+            echo '❌ Code style or format issues detected.'
         }
     }
 }
