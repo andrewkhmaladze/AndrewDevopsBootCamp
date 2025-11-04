@@ -1,7 +1,7 @@
 package com.example;
  
 public class App {
-    public static String getGreeting() {
+    public static String GetGreeting() {
         return "Hello from Jenkins!";
     }
  
