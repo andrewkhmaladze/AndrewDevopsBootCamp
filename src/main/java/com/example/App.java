@@ -1,10 +1,17 @@
 package com.example;
- 
+
 public class App {
+
     public static void main(String[] args) {
-        System.out.println("Hello world!"); System.out.println("Bad style!"); // long line
+        System.out.println(getGreeting());
+    }
+
+    // Added method so the test compiles and runs
+    public static String getGreeting() {
+        return "Wrong Message!";
     }
 }
+
 
  
  
