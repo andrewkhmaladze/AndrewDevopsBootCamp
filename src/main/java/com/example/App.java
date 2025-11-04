@@ -1,14 +1,12 @@
 package com.example;
 
 public class App {
-
-    public static void main(String[] args) {
-        System.out.println(getGreeting());
+    public static int add(int a, int b) {
+        return a + b;
     }
 
-    // Added method so the test compiles and runs
-    public static String getGreeting() {
-        return "Wrong Message!";
+    public static void main(String[] args) {
+        System.out.println("Sum: " + add(2, 3));
     }
 }
 
