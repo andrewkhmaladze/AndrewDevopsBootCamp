@@ -1,13 +1,13 @@
 package com.example;
-
+ 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+ 
 public class AppTest {
-    
+ 
     @Test
     public void testGreeting() {
         String result = App.getGreeting();
-        assertEquals("Wrong Message!", result);  // <-- intentionally wrong
+        assertEquals("Hello from Jenkins!", result);
     }
 }
