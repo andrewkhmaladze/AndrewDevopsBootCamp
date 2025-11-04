@@ -1,23 +1,23 @@
 pipeline {
     agent any
- 
+
     tools {
         maven 'MAVEN_HOME'  // Name from Jenkins -> Global Tool Configuration
     }
- 
+
     stages {
         stage('Checkout') {
             steps {
                 git branch: 'dayTwoJava', url: 'https://github.com/andrewkhmaladze/AndrewDevopsBootCamp.git'
             }
-  o      }
- 
+        }  // <-- Removed the stray 'o'
+
         stage('Build') {
             steps {
                 sh 'mvn clean compile'
             }
         }
- 
+
         stage('Test') {
             steps {
                 sh 'mvn test'
@@ -28,7 +28,7 @@ pipeline {
                 }
             }
         }
- 
+
         stage('Checkstyle') {
             steps {
                 // Run Checkstyle analysis
@@ -47,7 +47,7 @@ pipeline {
                 }
             }
         }
- 
+
         stage('Package') {
             steps {
                 sh 'mvn package -DskipTests'
@@ -55,7 +55,7 @@ pipeline {
             }
         }
     }
- 
+
     post {
         success {
             echo '✅ Build, tests, checkstyle, and packaging completed successfully!'
