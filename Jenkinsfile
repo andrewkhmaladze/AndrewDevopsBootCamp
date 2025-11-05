@@ -23,7 +23,8 @@ pipeline {
         stage('Run Unit Tests') {
             steps {
                 echo '🧪 Running JUnit tests...'
-                sh 'mvn test'
+                // Use the JaCoCo Maven plugin to run tests with coverage
+                sh 'mvn test jacoco:report'
             }
             post {
                 always {
@@ -46,6 +47,22 @@ pipeline {
     }
  
     post {
+        always {
+            // Always publish JaCoCo coverage report, even if build fails
+            jacoco(
+                execPattern: 'target/jacoco.exec',
+                classPattern: 'target/classes',
+                sourcePattern: 'src/main/java',
+                // Optional: Set coverage thresholds (uncomment if needed)
+                // changeBuildStatus: true,
+                // minimumInstructionCoverage: '70', 
+                // minimumBranchCoverage: '60',
+                // minimumComplexityCoverage: '60',
+                // minimumLineCoverage: '70',
+                // minimumMethodCoverage: '70',
+                // minimumClassCoverage: '80'
+            )
+        }
         success {
             echo '✅ All stages completed successfully — build and tests passed!'
         }
