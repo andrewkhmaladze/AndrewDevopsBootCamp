@@ -3,24 +3,24 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
          https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    
+
     <modelVersion>4.0.0</modelVersion>
-    
+
     <groupId>com.example</groupId>
     <artifactId>devops-lab</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    
+
     <name>DevOps Lab Project, day 3 , automated testing</name>
     <description>Sample Java project with automated testing </description>
-    
+
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <checkstyle.config.location>google_checks.xml</checkstyle.config.location>
     </properties>
-    
+
     <dependencies>
         <!-- JUnit 5 for tests -->
         <dependency>
@@ -30,7 +30,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    
+
     <build>
         <plugins>
             <!-- Maven Surefire Plugin for running tests -->
@@ -62,7 +62,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <!-- Spotless: formatter -->
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
@@ -75,7 +75,5 @@
                 </configuration>
             </plugin>
         </plugins>
-    </build>
-</project>
 
 
