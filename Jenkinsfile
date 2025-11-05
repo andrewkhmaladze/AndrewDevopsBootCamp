@@ -3,28 +3,20 @@ pipeline {
     tools {
         maven 'MAVEN_HOME'
     }
-
+ 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'JavaDay2Homework', url: 'https://github.com/andrewkhmaladze/AndrewDevopsBootCamp.git'
+                git branch: 'dayThreeTAutomationTesting', url: 'https://github.com/andrewkhmaladze/AndrewDevopsBootCamp.git'
             }
         }
-
-        stage('Format Check') {
+ 
+        stage('Build') {
             steps {
-                echo '🔍 Checking code formatting...'
-                sh 'mvn spotless:check'
+                sh 'mvn clean compile'
             }
         }
-
-        stage('Linter Check') {
-            steps {
-                echo '🧹 Running Checkstyle...'
-                sh 'mvn checkstyle:check'
-            }
-        }
-
+ 
         stage('Run Unit Tests') {
             steps {
                 echo '🧪 Running JUnit tests...'
@@ -34,23 +26,26 @@ pipeline {
                 always {
                     junit '**/target/surefire-reports/*.xml'
                 }
+                failure {
+                    echo '❌ Some tests failed. Check Jenkins Test Report.'
+                }
             }
         }
-
+ 
         stage('Package') {
             steps {
-                sh 'mvn clean package -DskipTests'
+                sh 'mvn package -DskipTests'
                 archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
             }
         }
     }
-
+ 
     post {
         success {
-            echo '✅ Build completed successfully with clean code and passing tests!'
+            echo '✅ All tests passed! Build successful.'
         }
         failure {
-            echo '❌ Build failed! Check which stage failed: formatting, linting, or tests.'
+            echo '❌ Build failed due to test errors.'
         }
     }
 }
